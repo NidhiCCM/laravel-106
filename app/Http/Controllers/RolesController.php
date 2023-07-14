@@ -15,8 +15,7 @@ class RolesController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
-        
+    {           
            $currentUser=auth()->user()->id;
             $roles = Role::where('user_id', $currentUser)   
                         ->orderBy('created_at', 'asc')         
@@ -37,7 +36,6 @@ class RolesController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-
         $request->validated();
         $role = new Role;
         $role->name= $request->input('name');
@@ -59,10 +57,6 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        // if(auth()->user()->id !== $role->user_id){
-        //     return redirect('/roles')->with('error', 'Unauthorized Page');
-        // }
-        
         return view('roles.edit')->with('role',$role);
     }
 
@@ -72,9 +66,6 @@ class RolesController extends Controller
     public function update(StoreRoleRequest $request, Role $role)
     { 
         $request->validated();    
-        // if(auth()->user()->id !== $role->user_id){
-        //     return redirect('/roles')->with('error', 'Unauthorized Page');
-        // }
         $role->name = $request->input('name');
         $role->save();
 
@@ -86,10 +77,8 @@ class RolesController extends Controller
      */
     public function destroy(Role $role)
     {
-        // if(auth()->user()->id !==$role->user_id){
-        //     return redirect('/roles')->with('error', 'Unauthorized Page');
-        // }
         $role->delete();
+        
         return redirect('/roles')->with('success', 'Role Removed');
     }
 }
