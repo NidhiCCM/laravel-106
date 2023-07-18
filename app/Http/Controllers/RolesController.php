@@ -14,7 +14,7 @@ class RolesController extends Controller
     public function __construct()  
     {  
         $this->middleware('UserAuth')->only(['edit', 'show', 'destroy']);  
-   }    
+    }    
     /**
      * Display a listing of the resource.
      */
@@ -22,9 +22,6 @@ class RolesController extends Controller
     {            
         $roles = Role::where('user_id', auth()->user()->id)->get();   
         return view('roles.index', compact('roles'));                       
-            // return view('roles.index', [
-            //     'roles'=>Role::where('user_id', auth()->user()->id)                     
-            //                 ->paginate(3) ]);
     }
 
     /**
@@ -41,10 +38,6 @@ class RolesController extends Controller
     public function store(StoreRoleRequest $request):RedirectResponse
     {
         $validated = $request->validated();
-        // $role = new Role;
-        // $role->name = $request->input('name');
-        // $role->user_id = auth()->user()->id;
-        // $role->save();
         $request->user()->roles()->create($validated);
         return redirect(route('roles.index'))->with('success', 'Role Created');
     }

@@ -4,7 +4,6 @@
             {{ __('Edit Role') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
@@ -12,7 +11,6 @@
                     <form action="{{ route('roles.update', $role) }}" method="POST">
                         @csrf
                         @method('PUT')
-
                         <div>
                             <x-input-label for="name" value="Role Name" />
                             <x-text-input id="name" name="name" value="{{ old('name', $role->name) }}" type="text" class="block mt-1 w-full" />
