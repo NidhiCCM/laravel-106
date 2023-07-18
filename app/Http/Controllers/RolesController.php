@@ -21,7 +21,7 @@ class RolesController extends Controller
     public function index():View
     {            
         $roles = Role::where('user_id', auth()->user()->id)->get();   
-        return view('roles.index', compact('roles'));                       
+        return view('roles.index', compact('roles'));           
     }
 
     /**
