@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreRoleRequest;
 use Illuminate\Http\Request;
 use App\Models\Role;
+use Illuminate\Support\Facades\Redirect;
+
 class RolesController extends Controller
 {
     public function __construct()  
@@ -14,13 +18,13 @@ class RolesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {           
-           $currentUser=auth()->user()->id;
-            $roles = Role::where('user_id', $currentUser)   
-                        ->orderBy('created_at', 'asc')         
-                        ->paginate(5) ;                           
-            return view('roles.index')->with('roles', $roles ); 
+    public function index():View
+    {            
+        $roles = Role::where('user_id', auth()->user()->id)->get();   
+        return view('roles.index', compact('roles'));                       
+            // return view('roles.index', [
+            //     'roles'=>Role::where('user_id', auth()->user()->id)                     
+            //                 ->paginate(3) ]);
     }
 
     /**
@@ -34,14 +38,15 @@ class RolesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request)
+    public function store(StoreRoleRequest $request):RedirectResponse
     {
-        $request->validated();
-        $role = new Role;
-        $role->name= $request->input('name');
-        $role->user_id= auth()->user()->id;
-        $role->save();
-        return redirect('/roles')->with('success', 'Role Created');
+        $validated = $request->validated();
+        // $role = new Role;
+        // $role->name = $request->input('name');
+        // $role->user_id = auth()->user()->id;
+        // $role->save();
+        $request->user()->roles()->create($validated);
+        return redirect(route('roles.index'))->with('success', 'Role Created');
     }
 
     /**
@@ -69,7 +74,7 @@ class RolesController extends Controller
         $role->name = $request->input('name');
         $role->save();
 
-        return redirect('/roles')->with('success', 'Role Updated');
+        return redirect(route('roles.index'))->with('success', 'Role Updated');
     }
 
     /**
@@ -79,6 +84,6 @@ class RolesController extends Controller
     {
         $role->delete();
         
-        return redirect('/roles')->with('success', 'Role Removed');
+        return redirect(route('roles.index'))->with('success', 'Role Removed');
     }
 }
