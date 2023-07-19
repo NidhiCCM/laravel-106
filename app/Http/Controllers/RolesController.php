@@ -2,26 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreRoleRequest;
 use Illuminate\Http\Request;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 
 class RolesController extends Controller
 {
     public function __construct()  
     {  
-        $this->middleware('UserAuth')->only(['edit', 'show', 'destroy']);  
+        $this->middleware('role.owner')->only(['edit', 'show', 'destroy']);  
     }    
     /**
      * Display a listing of the resource.
      */
     public function index():View
-    {            
-        $roles = Role::where('user_id', auth()->user()->id)->get();   
-        return view('roles.index', compact('roles'));           
+    {   
+        $user = User::find(Auth::user()->roles);
+        $roles = Role::whereBelongsTo($user)->get(); 
+
+        return view('roles.index', compact('roles'));        
     }
 
     /**
@@ -39,6 +43,7 @@ class RolesController extends Controller
     {
         $validated = $request->validated();
         $request->user()->roles()->create($validated);
+
         return redirect(route('roles.index'))->with('success', 'Role Created');
     }
 

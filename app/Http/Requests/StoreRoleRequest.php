@@ -24,12 +24,9 @@ class StoreRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-          
-          
-            'name' => ['required',  'max:255',Rule::unique('roles')->where(function ($query)  {
-                return $query->where('user_id',auth()->user()->id);
-            })],
-      
+            'name' => ['required', 'max:255', Rule::unique('roles')->where(function($query)  {
+                return $query->where('user_id', auth()->user()->id);
+            })],      
         ];
         
     }

@@ -66,6 +66,7 @@
     </div>
 </x-app-layout>
 <script>
+    
     let table = new DataTable('#roles_table');
 
     $("document").ready(function(){

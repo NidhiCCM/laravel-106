@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Role;
 
-class UserAuth
+class EnsureRoleOwner
 {
     /**
      * Handle an incoming request.
@@ -16,15 +16,9 @@ class UserAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-     
         if ($request->role->user_id !== auth()->user()->id) {
-            return redirect('/roles')->with('error', 'Unauthorized Page');
-            
+            return redirect('roles.index')->with('error', 'Unauthorized Page');
           }
-          return $next($request);
-
-            
-        
+          return $next($request); 
     }
 }
