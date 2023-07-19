@@ -17,12 +17,10 @@ class EnsureRoleOwner
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (
-            $request->role->user_id
-             !== Auth::user()->id
-             ) {
+        if ( $request->role->user_id !== Auth::user()->id ) {
             return redirect(route('roles.index'))->with('error', 'Unauthorized Page');
           }
+
           return $next($request); 
     }
 }
