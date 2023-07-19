@@ -21,10 +21,10 @@ class StoreRoleRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules(): array
+     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:255', Rule::unique('roles')->where(function($query)  {
+            'name' => ['required', 'max:255', Rule::unique('roles')->where(function ($query)  {
                 return $query->where('user_id', Auth::user()->id);
             })],      
         ];
