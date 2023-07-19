@@ -20,9 +20,10 @@ class RolesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():View
+    public function index(Request $request): View
     {   
-        $roles = Auth::user()->roles;
+        $roles = $request->user()->roles;
+
         return view('roles.index', compact('roles'));        
     }
 
@@ -37,7 +38,7 @@ class RolesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request):RedirectResponse
+    public function store(StoreRoleRequest $request): RedirectResponse
     {
         $validated = $request->validated();
         $request->user()->roles()->create($validated);
@@ -58,17 +59,16 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('roles.edit')->with('role',$role);
+        return view('roles.edit')->with('role', $role);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreRoleRequest $request, Role $role)
+    public function update(StoreRoleRequest $request, Role $role): RedirectResponse
     { 
-        $request->validated();    
-        $role->name = $request->input('name');
-        $role->save();
+        $validated = $request->validated();  
+        $role->update($validated);
 
         return redirect(route('roles.index'))->with('success', 'Role Updated');
     }
