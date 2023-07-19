@@ -22,9 +22,7 @@ class RolesController extends Controller
      */
     public function index():View
     {   
-        $user = User::find(Auth::user());
-        $roles = Role::whereBelongsTo($user)->get(); 
-
+        $roles = Auth::user()->roles;
         return view('roles.index', compact('roles'));        
     }
 
