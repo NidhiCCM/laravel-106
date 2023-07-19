@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Role extends Model
 {
     use HasFactory;
-    protected $fillable=['name'];
+
+    protected $fillable = ['name'];
+    
     public function user():BelongsTo
     {
         return $this->belongsTo(User::class);
