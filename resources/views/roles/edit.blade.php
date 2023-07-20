@@ -15,7 +15,7 @@
                             <x-input-label for="name" value="Role Name"/>
                             <x-text-input id="name" name="name" value="{{ old('name', $role->name) }}" type="text" class="block mt-1 w-full"/>
                             <x-input-error :messages="$errors->get('name')" class="mt-2"/>
-                            @if ( $message = Session::get('success'))
+                            @if ($message = session()->get('success'))
                                 <div class="alert alert-success">
                                     {{ session('success') }}
                                 </div>

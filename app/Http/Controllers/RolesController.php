@@ -6,25 +6,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
+use Symfony\Component\Console\Input\Input;
 
 class RolesController extends Controller
 {
     public function __construct()  
     {  
         $this->middleware('role.owner')->only(['edit', 'show', 'destroy']);  
-    }    
+    }  
+      
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): View
     {   
-        $roles = $request->user()->roles;
-
-        return view('roles.index', compact('roles'));        
+        return view('roles.index', ['roles' => $request->user()->roles()->get() ]);        
     }
 
     /**
@@ -41,9 +42,10 @@ class RolesController extends Controller
     public function store(StoreRoleRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+
         $request->user()->roles()->create($validated);
 
-        return redirect(route('roles.index'))->with('success', 'Role Created');
+        return redirect(route('roles.index'))->with('success', 'Role created');
     }
 
     /**
@@ -65,12 +67,13 @@ class RolesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreRoleRequest $request, Role $role): RedirectResponse
+    public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     { 
-        $validated = $request->validated();  
+        $validated = $request->validated(); 
+
         $role->update($validated);
 
-        return redirect(route('roles.index'))->with('success', 'Role Updated');
+        return redirect(route('roles.index'))->with('success', 'Role updated');   
     }
 
     /**

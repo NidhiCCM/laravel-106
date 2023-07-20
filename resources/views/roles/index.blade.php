@@ -11,7 +11,7 @@
                     <a href="{{ route('roles.create') }}" class="mb-4 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
                         Create
                     </a>
-                    @if ($message = Session::get('success'))
+                    @if ($message = session()->get('success'))
                         <div class="alert">
                             <p class="ml-3 text-sm font-bold text-green-600">{{ session('success')}}</p>
                         </div>
@@ -67,9 +67,9 @@
 <script>
     let table = new DataTable('#roles_table');
 
-    $("document").ready(function() {
+    $(function() {
         setTimeout(function() {
             $("div.alert").remove();
-        }, 2000);
+        }, 1000);
     });
 </script>
