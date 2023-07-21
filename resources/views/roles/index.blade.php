@@ -11,10 +11,13 @@
                     <a href="{{ route('roles.create') }}" class="mb-4 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
                         Create
                     </a>
-                    @if ($message = session()->get('success'))
-                        <div class="alert">
-                            <p class="ml-3 text-sm font-bold text-green-600">{{ session('success')}}</p>
-                        </div>
+                    @if(session()->has('success'))
+                        <script>
+                            swal({
+                                title: '{{ session()->get('success') }}',
+                                icon: "success",
+                             })
+                        </script>
                     @endif
                     <div class="w-screen align-middle mt-3">
                         <table class="w-full border mt-3" id="roles_table">
@@ -46,10 +49,10 @@
                                             <a href="{{ route('roles.show', $role) }}" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
                                                 Show
                                             </a>
-                                            <form action="{{ route('roles.destroy', $role) }}" method="POST" onsubmit="return confirm('Are you sure?')" style="display: inline-block;">
+                                            <form action="{{ route('roles.destroy', $role) }}" method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <x-danger-button>
+                                                <x-danger-button class="confirm-button">
                                                     Delete
                                                 </x-danger-button>
                                             </form>
@@ -67,9 +70,23 @@
 <script>
     let table = new DataTable('#roles_table');
 
-    $(function() {
-        setTimeout(function() {
-            $("div.alert").remove();
-        }, 1000);
+    $('.confirm-button').click(function(event) {
+        var form =  $(this).closest("form");
+        event.preventDefault();
+        swal({
+            title: `Are you sure you want to delete this role?`,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                }
+            });
     });
 </script>
+
+
+
+

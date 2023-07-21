@@ -25,7 +25,7 @@ class RolesController extends Controller
      */
     public function index(Request $request): View
     {   
-        return view('roles.index', ['roles' => $request->user()->roles()->get() ]);        
+        return view('roles.index', ['roles' => $request->user()->roles ]);        
     }
 
     /**

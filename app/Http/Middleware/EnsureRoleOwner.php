@@ -15,9 +15,10 @@ class EnsureRoleOwner
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ( $request->role->user_id !== $request->user()->id ) {
+        // dd($request->user()->can('update', $request->role));
+        if ( !$request->user()->can('update', $request->role)) {
             return redirect(route('roles.index'))->with('error', 'Unauthorized Page');
-          }
+        }
 
           return $next($request); 
     }
