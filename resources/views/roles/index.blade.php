@@ -33,33 +33,6 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($roles as $role)
-                                    <tr>
-                                        <td class="border px-6 py-4 text-center">
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td class="border px-6 py-4">
-                                            {{ $role->name }}
-                                        </td>
-                                        <td class="px-6 py-4 border text-center">
-                                            <a href="{{ route('roles.edit', $role) }}" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
-                                                Edit
-                                            </a>
-                                            <a href="{{ route('roles.show', $role) }}" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
-                                                Show
-                                            </a>
-                                            <form action="{{ route('roles.destroy', $role) }}" method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <x-danger-button class="confirm-button">
-                                                    Delete
-                                                </x-danger-button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -67,26 +40,46 @@
         </div>
     </div>
 </x-app-layout>
-<script>
-    let table = new DataTable('#roles_table');
-
-    $('.confirm-button').click(function(event) {
-        var form =  $(this).closest("form");
-        event.preventDefault();
-        swal({
-            title: `Are you sure you want to delete this role?`,
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    form.submit();
-                }
-            });
+<script type="text/javascript">
+  $(function () {
+    $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
     });
+
+    var table = $('#roles_table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('roles.index') }}",
+        columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            {data: 'name', name: 'role'},
+            {data: 'action', name: 'action', orderable: true, searchable: true},
+        ]
+    });
+});
+</script>  
+
+<script>
+function confirmDelete(e) {
+    e.preventDefault();
+
+    var url = $(e).data('url');
+
+    return swal({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover this imaginary file!',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            $('#delete_form').submit();
+        } 
+    });
+    
+    return false;
+}
 </script>
-
-
-
-

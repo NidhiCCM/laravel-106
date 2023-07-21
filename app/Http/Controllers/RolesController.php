@@ -12,6 +12,8 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Symfony\Component\Console\Input\Input;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str; 
 
 class RolesController extends Controller
 {
@@ -23,9 +25,44 @@ class RolesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View
+    public function index(Request $request)
     {   
-        return view('roles.index', ['roles' => $request->user()->roles ]);        
+        if ($request->ajax()) {
+  
+            $data = $request->user()->roles;
+  
+            return DataTables::of($data)
+                    ->addIndexColumn()
+                    
+                    ->addColumn('action', function($row){
+   
+                            $btn = '<a href="'.route('roles.edit', $row->id).'" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
+                                        Edit
+                                    </a>';
+   
+                            $btn = $btn.'<a href="'.route('roles.show', $row->id).'" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
+                                         Show
+                                        </a>';
+                            $btn = $btn.'<form 
+                                            id="delete_form" 
+                                            action="'.route('roles.destroy', $row->id).'" 
+                                            method="POST" 
+                                            style="display: inline-block;">
+                                            '.csrf_field().'
+                                            '.method_field("DELETE").'
+                                            <button 
+                                                onsubmit="javascript:confirmDelete()" 
+                                                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 ">
+                                                Delete
+                                            </button>
+                                        </form>';
+                            return $btn;
+                    })         
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+      
+        return view('roles.index');
     }
 
     /**
