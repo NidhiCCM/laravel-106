@@ -9,9 +9,6 @@ use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\Request;
 use App\Models\Role;
-use App\Models\User;
-use Illuminate\Support\Facades\Redirect;
-use Symfony\Component\Console\Input\Input;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str; 
 
@@ -30,17 +27,36 @@ class RolesController extends Controller
         if ($request->ajax()) {
   
             $data = $request->user()->roles;
-  
+        
             return DataTables::of($data)
                     ->addIndexColumn()
-                    
+                    ->filter(function ($instance) use ($request) {
+                        if (!empty($request->get('name'))) {
+                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                                
+                                return Str::contains($row['name'], $request->get('name')) ? true : false;
+                            });
+                        }
+   
+                        if (!empty($request->get('search'))) {
+                            $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                                if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))){
+                                    return true;
+                                }else if (Str::contains(Str::lower($row['name']), Str::lower($request->get('search')))) {
+                                    return true;
+                                }
+   
+                                return false;
+                            });
+                        }
+                    })
                     ->addColumn('action', function($row){
    
                             $btn = '<a href="'.route('roles.edit', $row->id).'" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
                                         Edit
                                     </a>';
    
-                            $btn = $btn.'<a href="'.route('roles.show', $row->id).'" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
+                            $btn = $btn.'<a href="'.route('roles.show', $row->id).'" class="ml-2  inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25">
                                          Show
                                         </a>';
                             $btn = $btn.'<form 
@@ -51,15 +67,14 @@ class RolesController extends Controller
                                             '.csrf_field().'
                                             '.method_field("DELETE").'
                                             <button 
-                                                onsubmit="javascript:confirmDelete()" 
-                                                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 ">
+                                                class="ml-2 delete-btn inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 ">
                                                 Delete
                                             </button>
                                         </form>';
                             return $btn;
                     })         
                     ->rawColumns(['action'])
-                    ->make(true);
+                    ->make(true);       
         }
       
         return view('roles.index');
@@ -120,6 +135,6 @@ class RolesController extends Controller
     {
         $role->delete();
         
-        return redirect(route('roles.index'))->with('success', 'Role Removed');
+        return redirect(route('roles.index'))->with('success', 'Role deleted');
     }
 }
