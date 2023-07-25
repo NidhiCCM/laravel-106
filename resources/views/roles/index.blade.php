@@ -20,7 +20,7 @@
                         </script>
                     @endif
                     <div class="align-middle mt-3">
-                        <table class="border" id="roles_table" style="max-width: 1000px;">
+                        <table class="table-striped table-bordered data display nowrap" id="roles_table" style="max-width: 1000px;">
                             <thead>
                                 <tr class="text-center font-bold">
                                     <th class="px-6 py-3 border">
@@ -55,21 +55,19 @@
         ajax: {
             url:"{{ route('roles.index') }}",
             data:function (d){
-                d.email = $('.searchRole').val(),
+                d.role = $('.searchRole').val(),
                 d.search = $('input[type="search"]').val()
             }
         },
         columns: [
-            {render: function (data, type, row, meta) {
+            // {render: function (data, type, row, meta) {
                 
-                return meta.row + meta.settings._iDisplayStart + 1;
-                }
-            },
+            //     return meta.row + meta.settings._iDisplayStart + 1;
+            //     }
+            // },
+            {data: 'id', name: 'id'},
             {data: 'name', name: 'role'},
             {data: 'action', name: 'action', orderable: false, searchable: true},
-        ],
-        columnDefs: [
-            { "orderData": 0, "targets": 1 },
         ],
     });
 });
@@ -77,28 +75,19 @@ $(document).on('click', '.delete-btn', function (e) {
     e.preventDefault();
     var url = $(e).data('url');
 
-return swal({
-    title: 'Are you sure?',
-    text: 'Once deleted, you will not be able to recover this !',
-    icon: 'warning',
-    buttons: true,
-    dangerMode: true,
-})
-.then((willDelete) => {
-    if (willDelete) {
-        $('#delete_form').submit();
-    } 
-});            
+    return swal({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover this !',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            $('#delete_form').submit();
+        } 
+    });            
 });
-function applyDomBasedSorting() {
-    $.fn.dataTable.ext.order['data-sort'] = function(settings, col) {
-        return this.api().column(col, {
-            order: 'index'
-        }).nodes().map(function(td, i) {
-            return $(td).attr('data-sort');
-        });
-    }
-}
 </script>  
 
 

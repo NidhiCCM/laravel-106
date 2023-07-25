@@ -24,10 +24,9 @@ class RolesController extends Controller
      */
     public function index(Request $request)
     {   
+        $data = $request->user()->roles;
         if ($request->ajax()) {
   
-            $data = $request->user()->roles;
-        
             return DataTables::of($data)
                     ->addIndexColumn()
                     ->filter(function ($instance) use ($request) {
