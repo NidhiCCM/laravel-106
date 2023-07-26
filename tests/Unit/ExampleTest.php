@@ -1,16 +1,7 @@
 <?php
 
-namespace Tests\Unit;
+it("can return the sum of two number", function() {
 
-use PHPUnit\Framework\TestCase;
-
-class ExampleTest extends TestCase
-{
-    /**
-     * A basic test example.
-     */
-    public function test_that_true_is_true(): void
-    {
-        $this->assertTrue(true);
-    }
-}
+    $sum = 5 + 2;
+    $this->assertEquals($sum, 7);
+});
