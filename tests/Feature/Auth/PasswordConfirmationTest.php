@@ -25,7 +25,7 @@ it("test_password_can_be_confirmed", function()
         $response->assertSessionHasNoErrors();
 });
 
-it("test_password_is_nit_confirmed_with_invalid_password", function()
+it("test_password_is_not_confirmed_with_invalid_password", function()
 {
     $user = User::factory()->create();
 

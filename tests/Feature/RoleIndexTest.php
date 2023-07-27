@@ -3,22 +3,21 @@
 use App\Models\User;
 use App\Models\Role;
 
+beforeEach(fn() =>  $this->user = User::factory()->create());
+
 it("has role index page", function()
 {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->get('/roles');
+    $response = $this->actingAs($this->user)->get('/roles');
 
     $response->assertStatus(200); 
 });
 
-// it("can we see the new role", function()
-// {
-//     $role = Role::factory()->create();
-//     $user = User::factory()->create();
+it("can we see the new role", function()
+{ 
+    $role = Role::factory()->create(['user_id' => $this->user->id, 'name'=> 'name']);
 
-//     $response = $this->get('/roles');
+    $response = $this->actingAs($this->user)->get('/roles');
     
-//     $response->assertseeText($role->name);
-// });
+    $response->assertSeeText($role->name);
+});
 

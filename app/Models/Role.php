@@ -11,7 +11,10 @@ class Role extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'user_id',
+        'name'
+    ];
     
     public function user():BelongsTo
     {

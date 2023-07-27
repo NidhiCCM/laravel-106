@@ -34,12 +34,13 @@ it("authenticated user can store a role", function()
     $response = $this->actingAs($user)
         ->post('/roles', [
             'user_id' => $user->id,
-            'name' => 'test'
+            'name' => 'name'
     ]);
 
     $response->assertRedirect('/roles');
+   
     $this->assertDatabaseHas('roles', [
-        'name' => 'test'
+        'name' => 'name'
     ]);
 });
 

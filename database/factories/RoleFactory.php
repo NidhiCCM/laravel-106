@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Models\User;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
  */
@@ -14,11 +14,12 @@ class RoleFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
         return [
-            // "user_id" =>$this->faker->numberBetween(1,10),
-            // "name" => $this->faker->name(),
+            
+            'name' => $this->faker->name(),
         ];
     }
 }

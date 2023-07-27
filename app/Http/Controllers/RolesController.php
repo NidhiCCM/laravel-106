@@ -16,7 +16,7 @@ class RolesController extends Controller
 {
     public function __construct()  
     {  
-        $this->middleware('role.owner')->only(['edit', 'show', 'destroy']);  
+        $this->middleware('role.owner')->only(['edit', 'show', 'update', 'destroy']);  
     }  
       
     /**
