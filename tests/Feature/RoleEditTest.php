@@ -5,7 +5,7 @@ use App\Models\Role;
 
 beforeEach(function(){
     $this->user = User::factory()->create();
-    $this->role = Role::factory()->create(['user_id' => $this->user->id, 'name'=> 'name']); 
+    $this->role = Role::factory()->create(['user_id' => $this->user->id]); 
 });
 
 it("has role edit route", function()

@@ -18,7 +18,9 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            
+            'user_id' => function () {
+                return User::factory()->create()->id;
+            },
             'name' => $this->faker->name(),
         ];
     }
