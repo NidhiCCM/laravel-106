@@ -8,7 +8,7 @@
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="overflow-hidden overflow-x-auto border-b border-gray-200 bg-white p-6">
-                    <form action="{{ route('roles.update', $role) }}" method="POST">
+                    <form action="{{ route('roles.update', $role->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div>

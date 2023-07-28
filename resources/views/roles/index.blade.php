@@ -14,7 +14,7 @@
                     @if(session()->has('success'))
                         <script>
                             swal({
-                                title: '{{ session()->get('success') }}',
+                                title: '{{ session()->get("success") }}',
                                 icon: "success",
                              })
                         </script>
@@ -48,7 +48,7 @@
           }
     });
 
-    var table = $('#roles_table').DataTable({
+    $('#roles_table').DataTable({
         processing: true,
         serverSide: true,
         responsive:true,
@@ -69,6 +69,7 @@
             {data: 'name', name: 'role'},
             {data: 'action', name: 'action', orderable: false, searchable: true},
         ],
+        order: [[0, 'asc']]
     });
 });
 $(document).on('click', '.delete-btn', function (e) {                

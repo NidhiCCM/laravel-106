@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
         //         'name' => fake()->name()
         //     ]);
         // });
-        User::factory(5)->create();
-        Role::factory(10)->create();
+        User::factory()->create();
+        Role::factory(100)->create();
    
     }
 }

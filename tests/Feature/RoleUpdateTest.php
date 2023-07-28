@@ -23,7 +23,7 @@ it("unauthenticated user can not update a role", function()
 it("authenticated user can update a role", function()
 {
     $response = $this->actingAs($this->user)
-                    ->put('roles/'.$this->role->id,[
+                    ->put('roles/'.$this->role->id, [
                         'id' => $this->role->id,
                         'name' => 'new name'
                     ])
