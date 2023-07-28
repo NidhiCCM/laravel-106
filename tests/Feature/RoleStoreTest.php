@@ -29,16 +29,16 @@ it("unauthenticated user cannot store a role", function()
 it("authenticated user can store a role", function()
 {
     $response = $this->actingAs($this->user)
-        ->post('/roles', [
-            'user_id' => $this->user->id,
-            'name' => 'role'
-    ]);
+                    ->post('/roles', [
+                        'user_id' => $this->user->id,
+                        'name' => 'role'
+                ]);
 
     $response->assertRedirect('/roles');
 
     $this->assertDatabaseHas('roles', [
-        'name' => 'role'
-    ]);
+            'name' => 'role'
+        ]);
 });
 
 it("requires a role name", function()

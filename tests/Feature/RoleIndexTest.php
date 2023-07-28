@@ -22,7 +22,6 @@ it("authenticated user can see roles on index page", function()
     
     $response = $this->actingAs($this->user)->get('/roles');
     $response->assertSuccessful();
-    $response->assertSee('role',$role1);
-    $this->assertCount(1, Role::all());
-   
+    $response->assertSee('role', $role1);
+    $this->assertCount(1, Role::all());   
 });
