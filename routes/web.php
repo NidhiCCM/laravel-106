@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RolesController;
-use App\Http\Controllers\ManageRolesController;
+use App\Http\Controllers\RolesModalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('/roles', RolesController::class);
-    Route::resource('/manage', ManageRolesController::class);
+    Route::resource('/roles-modal', RolesModalController::class);
+   
 });
-
 require __DIR__.'/auth.php';

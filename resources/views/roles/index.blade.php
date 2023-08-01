@@ -20,7 +20,7 @@
                         </script>
                     @endif
                     <div class="align-middle mt-3">
-                        <table class="table-striped table-bordered data display nowrap" id="roles_table" style="max-width: 1000px;">
+                        <table class="table-striped table-bordered data display nowrap" id="roles_table" >
                             <thead>
                                 <tr class="text-center font-bold">
                                     <th class="px-6 py-3 border">
@@ -92,3 +92,4 @@ $(document).on('click', '.delete-btn', function (e) {
 </script>  
 
 
+ 
